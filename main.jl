@@ -26,8 +26,5 @@ function fibonacci_sphere(samples::Int32)::Vector{Tuple{Float64, Float64}}
     return points
 end
 
-const radius = 6.4e6
-
-println(constants)
 
 end

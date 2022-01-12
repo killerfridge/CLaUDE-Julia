@@ -5,7 +5,7 @@ using PyCall
 
 interpolate = pyimport("scipy.interpolate")
 
-export Pixel, update_temp!, update_velocity!, advect!, interpolate, push!
+export Pixel, update_temp!, update_velocity!, advect!, interpolate, push!, Atmosphere
 
 mutable struct Pixel
     lat::Float64
@@ -24,14 +24,10 @@ end
 
 mutable struct Atmosphere
     pixels::Vector{Pixel}
+    name::String
     function Atmosphere()
-        return new([])
+        return new(Vector(), "Atmosphere")
     end
-end
-
-
-function push!(s::Atmosphere, x::Pixel)
-    push!(s.pixels, x)
 end
 
 
@@ -79,6 +75,10 @@ function advect!(pixel::Pixel, constants::Constant=constants)
 
     return pixel
 
+end
+
+function Base.push!(s::Atmosphere, x::Pixel)
+    Base.push!(s.pixels, x)
 end
 
 
