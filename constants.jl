@@ -1,6 +1,6 @@
 module Constants
 
-export constants, Constant, config
+export constants, Constant, config, τ
 
 struct Constant
     solar::Int16
@@ -35,5 +35,6 @@ end
 
 constants = Constant()
 config = Config()
+τ = 2 * π
 
 end
