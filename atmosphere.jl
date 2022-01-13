@@ -38,8 +38,8 @@ mutable struct InterpolatedAtmosphere
     temps
     ewv
     nsv
-    function InterpolatedAtmosphere(x::Atmosphere)
-        return new(x.pixels, interpolate_pixels(x)...)
+    function InterpolatedAtmosphere(x::Atmosphere, s::Number=4)
+        return new(x.pixels, interpolate_pixels(x, s)...)
     end
 end
 
@@ -140,7 +140,7 @@ function advect!(atmos::Atmosphere, inter_atmos::InterpolatedAtmosphere, constan
     return atmos
 end
 
-function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon::Float64=0.)
+function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon::Float64=0., s::Number=4)
 
     update_temp!(atmos; constants=constants, sun_lon=sun_lon)
     update_velocity!(atmos, constants)
@@ -148,9 +148,9 @@ function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon
 
 end
 
-function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon::Float64=0., fast::Bool=true)
+function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon::Float64=0., fast::Bool=true, s::Number=4)
 
-    inter_atmos = InterpolatedAtmosphere(atmos)
+    inter_atmos = InterpolatedAtmosphere(atmos, s)
     update_temp!(atmos; constants=constants, sun_lon=sun_lon)
     update_velocity!(atmos, inter_atmos, constants)
     advect!(atmos, inter_atmos, constants)
@@ -181,16 +181,16 @@ function Base.getindex(a::Pixel, i::Symbol)
 
 end
 
-function interpolate_pixels(atmos::Atmosphere)
+function interpolate_pixels(atmos::Atmosphere, s::Number=4)
     lats = [pixel.lat for pixel in atmos.pixels]
     lons = [pixel.lon for pixel in atmos.pixels]
     temp_list = [pixel.temp for pixel in atmos.pixels]
     ewv_list = [pixel.velocity_east_west for pixel in atmos.pixels]
     nsv_list = [pixel.velocity_north_south for pixel in atmos.pixels]
 
-    temps = interpolate.SmoothSphereBivariateSpline(lats, lons, temp_list, s=4)
-    ewv = interpolate.SmoothSphereBivariateSpline(lats, lons, ewv_list, s=4)
-    nsv = interpolate.SmoothSphereBivariateSpline(lats, lons, nsv_list, s=4)
+    temps = interpolate.SmoothSphereBivariateSpline(lats, lons, temp_list, s=s)
+    ewv = interpolate.SmoothSphereBivariateSpline(lats, lons, ewv_list, s=s)
+    nsv = interpolate.SmoothSphereBivariateSpline(lats, lons, nsv_list, s=s)
 
     return lats, lons, temps, ewv, nsv
 
