@@ -169,6 +169,7 @@ function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon
     update_temp!(atmos; constants=constants, sun_lon=sun_lon)
     # update_velocity!(atmos, inter_atmos, constants)
     # advect!(atmos, inter_atmos, constants)
+    return InterpolatedAtmosphere(atmos, s)
 
 end
 
