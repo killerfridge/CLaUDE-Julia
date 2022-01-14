@@ -6,8 +6,6 @@ include("constants.jl")
 using .Atmos_Mod
 using .Constants
 using Plots
-using DelimitedFiles
-using BenchmarkTools
 
 atmos = initialize_atmosphere(Int32(2500))
 # lats, lons, temps, esv, nsv = interpolate_pixels(atmos)
@@ -24,19 +22,6 @@ function plotting(atmos::Atmosphere, quiver_resample::Integer=4)
     atmos_temps = temps(lats_grid, lons_grid)
     atmos_ewv = esv(lats_grid, lons_grid)
     atmos_nsv = nsv(lats_grid, lons_grid)
-
-    open("logs_lon.csv", "w") do io
-        writedlm(io, lons_gridded[1:quiver_resample:end, 1:quiver_resample:end],)
-    end
-    open("logs_lats.csv", "w") do io
-        writedlm(io, lats_gridded[1:quiver_resample:end, 1:quiver_resample:end],)
-    end
-    open("ewv.csv", "w") do io
-        writedlm(io, atmos_ewv[1:quiver_resample:end, 1:quiver_resample:end],)
-    end
-    open("nsv.csv", "w") do io
-        writedlm(io, atmos_nsv[1:quiver_resample:end, 1:quiver_resample:end],)
-    end
 
     plt = scatter(
         lons_gridded,

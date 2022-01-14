@@ -46,7 +46,7 @@ end
 
 function update_temp!(pixel::Pixel; constants::Constant=constants, sun_lon::Float64=0.)
 
-    pixel.temp = constants.dt * (
+    pixel.temp += constants.dt * (
         constants.solar *
         (1 - constants.albedo) *
         max(0, sin(pixel.lat)) * 
@@ -150,10 +150,10 @@ end
 
 function update_atmos!(atmos::Atmosphere; constants::Constant=constants, sun_lon::Float64=0., fast::Bool=true, s::Number=4)
 
-    inter_atmos = InterpolatedAtmosphere(atmos, s)
+    # inter_atmos = InterpolatedAtmosphere(atmos, s)
     update_temp!(atmos; constants=constants, sun_lon=sun_lon)
-    update_velocity!(atmos, inter_atmos, constants)
-    advect!(atmos, inter_atmos, constants)
+    # update_velocity!(atmos, inter_atmos, constants)
+    # advect!(atmos, inter_atmos, constants)
 
 end
 
