@@ -2,9 +2,7 @@ module CLaUDE
 using Pkg
 Pkg.activate("claude")
 include("atmosphere.jl")
-include("constants.jl")
 using .Atmos_Mod
-using .Constants
 using Plots
 
 atmos = initialize_atmosphere(Int32(2500))
@@ -54,7 +52,7 @@ function plotloop(atmos,loops, sun_lon=0.)
 
     for i in 1:loops
 
-        update_atmos!(atmos; fast=true, s=0.5, sun_lon=sun_lon)
+        update_atmos!(atmos; constants=constants, fast=true, s=0.5, sun_lon=sun_lon)
 
         plotting(atmos, 4)
         frame(anim)

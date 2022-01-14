@@ -7,7 +7,22 @@ using PyCall
 
 interpolate = pyimport("scipy.interpolate")
 
-export Pixel, update_temp!, update_velocity!, advect!, interpolate, push!, Atmosphere, initialize_atmosphere, getindex, interpolate_pixels, InterpolatedAtmosphere, update_atmos!
+export Pixel, 
+update_temp!,
+update_velocity!, 
+advect!,
+interpolate,
+push!, 
+Atmosphere, 
+initialize_atmosphere,
+getindex, 
+interpolate_pixels,
+InterpolatedAtmosphere,
+update_atmos!,
+Constant,
+constants,
+config,
+τ
 
 mutable struct Pixel
     lat::Float64
